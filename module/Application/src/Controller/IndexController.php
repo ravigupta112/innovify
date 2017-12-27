@@ -209,10 +209,13 @@ class IndexController extends AbstractActionController
             }
         }
 
-        return new ViewModel([
+        $model =  new ViewModel([
             'form' => $form,
             'customer' => $customer
         ]);
+       
+        $model->setTemplate('application\index\add-transaction');
+        return $model;
     }
 
     
