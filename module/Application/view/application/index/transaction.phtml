@@ -1,0 +1,56 @@
+<?php
+$this->headTitle('Transaction');
+
+$this->pageBreadcrumbs()->setItems([
+'Customer' => $this->url('home'),
+'Transactions' => $this->url('application', ['action' => 'transaction', 'id' => $customer->getId()]),
+]);
+?>
+<a href="<?= $this->url('application', ['action' => 'add-transaction', 'id' => $customer->getId()]) ?>" class="btn">Add Transaction</a>
+<table id="example" class="display" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>Amount</th>
+            <th>Service Tax</th>
+            <th>Vat</th>
+            <th>Total</th>
+            <th>Created on</th>
+            <th>Updated on</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Amount</th>
+            <th>Service Tax</th>
+            <th>Vat</th>
+            <th>Total</th>
+            <th>Created on</th>
+            <th>Updated on</th>
+            <th>Action</th>
+        </tr>
+    </tfoot>
+    <tbody>
+        <?php foreach ($data as $val) {  ?>
+            <tr>
+                <td><?= $val->getAmount() ?></td>
+                <td><?= $val->getServiceTax() ?></td>
+                <td><?= $val->getVat() ?></td>
+                <td><?= $val->getVat()+$val->getAmount()+$val->getVat() ?></td>
+                
+                <td><?= $val->getCreatedAt()->format('Y-m-d H:i:s') ?></td>
+                <td><?= (!empty($val->getUpdatedAt())) ? $val->getUpdatedAt()->format('Y-m-d H:i:s') : "" ?></td>
+                <td>
+                    <a href="<?= $this->url('application', ['action' => 'edit-transaction', 'param' => $val->getId(), 'id' => $customer->getId()]) ?>">Edit Transaction</a>
+                </td>
+
+            </tr>
+        <?php } ?>
+
+    </tbody>
+</table>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>

@@ -1,0 +1,63 @@
+<?php
+$this->headTitle('Add Transaction');
+
+$this->pageBreadcrumbs()->setItems([
+    'Customers' => $this->url('home'),
+    'Transactions' => $this->url('application', ['action' => 'transaction', 'id' => $customer->getId()]),
+    'Add Transaction' => $this->url('application', ['action' => 'add-transaction']),
+]);
+?>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <?= $this->form()->openTag($form); ?>
+
+        <div class="form-group">
+            <label>Customer</label>            
+            <input type="text" class="form-control underlined" disabled value="<?= $customer->getName() ?>">                              
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('amount')); ?>
+            <?= $this->formElement($form->get('amount')); ?>
+            <?= $this->formElementErrors($form->get('amount')); ?>                  
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('service_tax')); ?>
+            <?= $this->formElement($form->get('service_tax')); ?>                            
+        </div>
+
+        <div class="form-group">
+            <?= $this->formLabel($form->get('vat')); ?>
+            <?= $this->formElement($form->get('vat')); ?> 
+        </div>
+        <div class="form-group">
+            <label>Total</label>            
+            <input type="text" class="form-control underlined" id="total" disabled value="0">                              
+        </div>
+        <?= $this->formElement($form->get('create')); ?>
+
+        <?= $this->form()->closeTag(); ?>
+    </div>    
+</div>   
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#amount").change(function () {
+            calculateAmount();
+        });
+         calculateAmount();
+    });
+    function calculateAmount() {
+        var amt = parseFloat($("#amount").val());
+        var service = parseFloat((<?= \Application\Library\Utility::SERVICE_TAX_PER ?> * amt) / 100);
+        service = service||0
+        var vat = parseFloat((<?= \Application\Library\Utility::VAT_PER ?> * service) / 100);
+        vat = vat||0
+        var tot = parseFloat((amt*1)+(service*1)+(vat*1));
+        tot = tot || 0
+        $("#service_tax").val( service);
+        $("#vat").val( vat);
+        $("#total").val( tot);
+    }
+</script>

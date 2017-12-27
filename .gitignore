@@ -1,0 +1,5 @@
+.vagrant/
+nbproject/
+data/cache/*
+!data/cache/.gitkeep
+phpunit.xml
